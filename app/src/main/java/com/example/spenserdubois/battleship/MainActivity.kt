@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         val miniView = miniView
         val hitMiss = HitMiss
         val passBtn = Pass
+        val readyBtn = ready
+        val readyPhrase = readyPhrase
         var toDB = DatabaseElement()
 
 
@@ -73,8 +75,7 @@ class MainActivity : AppCompatActivity() {
         if(player.equals("Player2"))
         {
             manager = GameManager(player1, player2, toDB)
-            gotoHoldScreen()
-
+            passBtn.performClick()
         }
         else
         {
@@ -166,29 +167,50 @@ class MainActivity : AppCompatActivity() {
         }
 
         passBtn.setOnClickListener{
-            gotoHoldScreen()
+            hitMiss.text = ""
+            gameView.visibility = View.INVISIBLE
+            miniView.visibility = View.INVISIBLE
+            passBtn.visibility = View.INVISIBLE
+            if(turn % 2 == 0)
+                readyPhrase.text = "\n\nIs Player 1\nReady?"
+            else
+                readyPhrase.text = "\n\nIs Player 2\nReady?"
+            readyBtn.visibility = View.VISIBLE
+            readyPhrase.visibility = View.VISIBLE
 
+        }
+
+        readyBtn.setOnClickListener{
+            gameView.visibility = View.VISIBLE
+            miniView.visibility = View.VISIBLE
+            readyBtn.visibility = View.INVISIBLE
+            readyPhrase.visibility = View.INVISIBLE
+            hitMiss.text = ""
+            gameView.canClick = true
+            passBtn.visibility = View.INVISIBLE
+            turn++
+            var tempPlayer : Player
+            var otherPlayer : Player
+            if(turn%2 == 0) {
+                tempPlayer = player2
+                otherPlayer = player1
+            }
+            else {
+                tempPlayer = player1
+                otherPlayer = player2
+            }
+            miniView.setHitPath(otherPlayer.miniHitPath)
+            miniView.setMissPath(otherPlayer.miniMissPath)
+            miniView.drawBoats(otherPlayer.boats)
+            miniView.invalidate()
+            gameView.setSunkPath(tempPlayer.sunkPath)
+            gameView.setHitPath(tempPlayer.hitPath)
+            gameView.setMissPath(tempPlayer.missPath)
+            gameView.invalidate()
         }
     }
 
-    private fun gotoHoldScreen() {
-        HitMiss.text = ""
-        boardView.visibility = View.INVISIBLE
-        miniView.visibility = View.INVISIBLE
-        Pass.visibility = View.INVISIBLE
-        readyPhrase.visibility = View.VISIBLE
-        readyPhrase.text = "Waitng for oppenent to shoot"
-        firebaseDB.child("Games").child(gameID).child("Manager").child("turn").addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onCancelled(p0: DatabaseError?) {
 
-            }
-
-            override fun onDataChange(p0: DataSnapshot?) {
-                goBackToGameScreen()
-            }
-
-        })
-    }
 
     private fun goBackToGameScreen() {
         boardView.visibility = View.VISIBLE
@@ -220,18 +242,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateManagerForPlayer2() {
         //Player 1 ships. Will be updated from firebase DB so both players have the same view
-        var carrier = ArrayList<Coord>()
-        var sub = ArrayList<Coord>()
-        var cruiser = ArrayList<Coord>()
-        var battle = ArrayList<Coord>()
-        var destroy = ArrayList<Coord>()
-
-        var carrier2 = ArrayList<Coord>()
-        var sub2 = ArrayList<Coord>()
-        var cruiser2 = ArrayList<Coord>()
-        var battle2 = ArrayList<Coord>()
-        var destroy2 = ArrayList<Coord>()
-
 
         firebaseDB.child("Games").child(gameID).child("Manager").child("boatPos1").addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
@@ -281,28 +291,32 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(data: DataSnapshot?) {
                 if(data !is DataSnapshot)
                     return
+                for (b2 in player1.boats) {
+                    b2.coords.clear()
+                }
                 val iterable = data.children
-                for(c in iterable)
-                {
+                for(c in iterable) {
                     var sArr = c.value.toString().split(" ")
-                    when(sArr[0].toInt()) {
+                    var coord = Coord(sArr[1].toInt(), sArr[2].toInt())
+                    when (sArr[0].toInt()) {
+
                         5 -> {
-                            carrier2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                            player1.boats[0].coords.add(coord)
                         }
                         4 -> {
-                            battle2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                            player1.boats[4].coords.add(coord)
                         }
                         3 -> {
-                            cruiser2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                            player1.boats[1].coords.add(coord)
                         }
                         2 -> {
-                            sub2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                            player1.boats[2].coords.add(coord)
                         }
                         1 -> {
-                            destroy2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                            player1.boats[3].coords.add(coord)
                         }
-                    }
 
+                    }
                 }
             }
 

@@ -54,8 +54,7 @@ class ChooseActivity : AppCompatActivity() {
             intent.putExtra("Player", "Player2")
             intent.putExtra("manager", manager)
             intent.putExtra("GameID", manager.name)
-            Thread.sleep(1000)
-            setResult(0, intent)
+            Thread.sleep(2000)
             startActivity(intent)
         }
         deleteBtn.setOnClickListener{
