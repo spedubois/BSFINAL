@@ -246,7 +246,7 @@ class MainActivity : AppCompatActivity() {
                 val iterable = data.children
                 for (c in iterable) {
                     var sArr = c.value.toString().split(" ")
-                    var coord = Coord(sArr[1].toInt(), sArr[2].toInt())
+                    var coord = Coord(sArr[2].toInt(), sArr[1].toInt())
                     when (sArr[0].toInt()) {
 
                         5 -> {
@@ -285,7 +285,7 @@ class MainActivity : AppCompatActivity() {
                 val iterable = data.children
                 for(c in iterable) {
                     var sArr = c.value.toString().split(" ")
-                    var coord = Coord(sArr[1].toInt(), sArr[2].toInt())
+                    var coord = Coord(sArr[2].toInt(), sArr[1].toInt())
                     when (sArr[0].toInt()) {
 
                         5 -> {
