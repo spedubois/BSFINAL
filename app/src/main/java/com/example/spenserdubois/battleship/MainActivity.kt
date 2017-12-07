@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,10 +17,11 @@ class MainActivity : AppCompatActivity() {
     var turn = 1
     var manager : GameManager = GameManager(player1, player2, DB = DatabaseElement())
     var gameID = ""
+    var email = ""
+
 
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var firebaseDB : DatabaseReference
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,10 @@ class MainActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDB = FirebaseDatabase.getInstance().reference
+         var user = firebaseAuth.currentUser
+
+        if(user !is FirebaseUser)
+            return
 
         val gameView = boardView
         val miniView = miniView
@@ -38,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         val readyBtn = ready
         val readyPhrase = readyPhrase
         var toDB = DatabaseElement()
+
 
         gameView.layoutParams.height = gameView.layoutParams.width
 
@@ -48,9 +55,24 @@ class MainActivity : AppCompatActivity() {
         player1.name = "Player 1"
         player2.name = "Player 2"
         manager = GameManager(player1, player2, toDB)
+        firebaseDB.child("Games").child(gameID).child("Player2").addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(data: DataSnapshot?) {
+                if (data !is DataSnapshot)
+                    return
+                email = data.value.toString()
+                if(user.email.equals(email))
+                    updateManagerForPlayer2()
+            }
+
+        })
         miniView.drawBoats(player2.boats)
         miniView.invalidate()
         save(manager)
+
 
 
 
@@ -173,6 +195,106 @@ class MainActivity : AppCompatActivity() {
             gameView.invalidate()
         }
     }
+
+    private fun updateManagerForPlayer2() {
+        //Player 1 ships. Will be updated from firebase DB so both players have the same view
+        var carrier = ArrayList<Coord>()
+        var sub = ArrayList<Coord>()
+        var cruiser = ArrayList<Coord>()
+        var battle = ArrayList<Coord>()
+        var destroy = ArrayList<Coord>()
+
+        var carrier2 = ArrayList<Coord>()
+        var sub2 = ArrayList<Coord>()
+        var cruiser2 = ArrayList<Coord>()
+        var battle2 = ArrayList<Coord>()
+        var destroy2 = ArrayList<Coord>()
+
+
+        firebaseDB.child("Games").child(gameID).child("Manager").child("boatPos1").addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(data: DataSnapshot?) {
+                if(data !is DataSnapshot)
+                    return
+                val iterable = data.children
+                for(c in iterable)
+                {
+                    var sArr = c.value.toString().split(" ")
+                    when(sArr[0].toInt()) {
+                        5 -> {
+                            carrier.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                        4 -> {
+                            battle.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                        3 -> {
+                            cruiser.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                        2 -> {
+                            sub.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                        1 -> {
+                            destroy.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                    }
+
+                }
+            }
+
+        })
+
+        firebaseDB.child("Games").child(gameID).child("Manager").child("boatPos2").addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(data: DataSnapshot?) {
+                if(data !is DataSnapshot)
+                    return
+                val iterable = data.children
+                for(c in iterable)
+                {
+                    var sArr = c.value.toString().split(" ")
+                    when(sArr[0].toInt()) {
+                        5 -> {
+                            carrier2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                        4 -> {
+                            battle2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                        3 -> {
+                            cruiser2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                        2 -> {
+                            sub2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                        1 -> {
+                            destroy2.add(Coord(sArr[1].toInt(), sArr[2].toInt()))
+                        }
+                    }
+
+                }
+            }
+
+        })
+
+        player1.boats[0].coords = carrier2
+        player1.boats[1].coords = cruiser2
+        player1.boats[2].coords = sub2
+        player1.boats[3].coords = destroy2
+        player1.boats[4].coords = battle2
+
+        player2.boats[0].coords = carrier
+        player2.boats[1].coords = cruiser
+        player2.boats[2].coords = sub
+        player2.boats[3].coords = destroy
+        player2.boats[4].coords = battle
+
+    }
+
     fun save(manager: GameManager)
     {
         var test = DatabaseElement()

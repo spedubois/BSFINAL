@@ -123,6 +123,7 @@ class BeginActivity : AppCompatActivity() {
 
         val intent = Intent(this@BeginActivity, Wait::class.java)
         intent.putExtra("GameID", uniqueID)
+        intent.putExtra("Email", player1)
         startActivity(intent)
     }
 }

@@ -8,7 +8,7 @@ import java.io.Serializable
 class Boat : Serializable{
     var life : Int
     val id : Int
-    val coords : ArrayList<Coord>
+    var coords : ArrayList<Coord>
 
     constructor(l : Int, type : Int)
     {

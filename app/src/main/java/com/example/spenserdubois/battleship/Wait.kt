@@ -27,6 +27,7 @@ class Wait : AppCompatActivity() {
         var gameId = textGameID
         val cancel = btnCancel as Button
         var s = intent.getStringExtra("GameID")
+        var e = intent.getStringArrayExtra("Email")
         gameId.text="GameID : "+s
 
         fireDB.child("Games").child(s).child("Player2").addValueEventListener(object:ValueEventListener{
@@ -43,6 +44,7 @@ class Wait : AppCompatActivity() {
                 if(!p2Name.equals("") && !canceled) {
                     var intent = Intent(this@Wait, MainActivity::class.java)
                     intent.putExtra("GameID", s)
+                    intent.putExtra("Email", e)
                     startActivity(intent)
                     finish()
                     return
