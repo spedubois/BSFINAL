@@ -56,26 +56,14 @@ class MainActivity : AppCompatActivity() {
         player2 = Player(miniView.layoutParams.width/10)
         player1.name = "Player 1"
         player2.name = "Player 2"
-        firebaseDB.child("Games").child(gameID).child("Player2").addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onCancelled(p0: DatabaseError?) {
-
-            }
-
-            override fun onDataChange(data: DataSnapshot?) {
-                if (data !is DataSnapshot)
-                    return
-                email = data.value.toString()
-                if(user.email.equals(email))
-                {
-                    updateManagerForPlayer2()
-                }
-            }
-
-        })
         if(player.equals("Player2"))
         {
+            updateManagerForPlayer2()
             manager = GameManager(player1, player2, toDB)
+            //miniView.drawBoats(player1.boats)
+            passBtn.visibility = View.VISIBLE
             passBtn.performClick()
+
         }
         else
         {
