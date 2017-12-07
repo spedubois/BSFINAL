@@ -290,6 +290,11 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(data: DataSnapshot?) {
                 if(data !is DataSnapshot)
                     return
+                for(i in 0 until 10)
+                {
+                    for(o in 0 until 10)
+                        player1.ships[i][o] = 0
+                }
                 for (b2 in player1.boats) {
                     b2.coords.clear()
                 }
