@@ -67,8 +67,14 @@ class LoginActivity : AppCompatActivity(){
                                 var user = firebaseAuth.currentUser
                                 if(user !is FirebaseUser)
                                     return
-                                if(user.isEmailVerified)
+                                if(user.isEmailVerified) {
                                     Toast.makeText(this@LoginActivity, "Login Successful!", Toast.LENGTH_SHORT).show()
+                                    var intent = Intent(this@LoginActivity, BeginActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                    return
+                                }
+
                                 else
                                 {
                                     Toast.makeText(this@LoginActivity, "Need to verify your email", Toast.LENGTH_SHORT).show()
@@ -104,10 +110,6 @@ class LoginActivity : AppCompatActivity(){
             return
         }
         myAsync().execute()
-        var intent = Intent(this@LoginActivity, BeginActivity::class.java)
-        startActivity(intent)
-        finish()
-        return
     }
 
 
