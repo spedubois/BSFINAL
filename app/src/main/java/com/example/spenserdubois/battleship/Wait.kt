@@ -17,6 +17,9 @@ class Wait : AppCompatActivity() {
         fireAuth = FirebaseAuth.getInstance()
         fireDB = FirebaseDatabase.getInstance().reference
         val user = fireAuth.currentUser
+
+        val btnCancel = btnCancel
+
         if(user !is FirebaseUser)
             return
 
@@ -47,5 +50,12 @@ class Wait : AppCompatActivity() {
             }
 
         })
+
+        btnCancel.setOnClickListener {
+            fireDB.child("Games").child(s).setValue("")
+            var intent = Intent(this@Wait, BeginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

@@ -44,7 +44,6 @@ class BeginActivity : AppCompatActivity() {
             var intent = Intent(this@BeginActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
-            return
         }
 
 
