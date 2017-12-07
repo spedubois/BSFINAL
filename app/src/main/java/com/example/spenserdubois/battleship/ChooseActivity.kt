@@ -51,9 +51,10 @@ class ChooseActivity : AppCompatActivity() {
         conBtn.setOnClickListener{
             fireDB.child("Games").child(manager.name).child("Player2").setValue(user.email)
             val intent = Intent(this@ChooseActivity, MainActivity::class.java)
-            intent.putExtra("Email", user.email)
+            intent.putExtra("Player", "Player2")
             intent.putExtra("manager", manager)
             intent.putExtra("GameID", manager.name)
+            Thread.sleep(1000)
             setResult(0, intent)
             startActivity(intent)
         }

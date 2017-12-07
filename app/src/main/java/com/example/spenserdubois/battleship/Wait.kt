@@ -44,7 +44,7 @@ class Wait : AppCompatActivity() {
                 if(!p2Name.equals("") && !canceled) {
                     var intent = Intent(this@Wait, MainActivity::class.java)
                     intent.putExtra("GameID", s)
-                    intent.putExtra("Email", e)
+                    intent.putExtra("Player", "Player1")
                     startActivity(intent)
                     finish()
                     return
