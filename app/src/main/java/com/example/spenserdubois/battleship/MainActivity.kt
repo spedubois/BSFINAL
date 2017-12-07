@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         {
             updateManagerForPlayer2()
             manager = GameManager(player1, player2, toDB)
-            //miniView.drawBoats(player1.boats)
+            miniView.drawBoats(player1.boats)
             passBtn.visibility = View.VISIBLE
             passBtn.performClick()
 
@@ -240,29 +240,40 @@ class MainActivity : AppCompatActivity() {
                 if (data !is DataSnapshot)
                     return
 
+                for(i in 0 until 10)
+                {
+                    for(o in 0 until 10)
+                        player2.ships[i][o] = 0
+                }
                 for (b2 in player2.boats) {
                     b2.coords.clear()
                 }
                 val iterable = data.children
                 for (c in iterable) {
                     var sArr = c.value.toString().split(" ")
-                    var coord = Coord(sArr[2].toInt(), sArr[1].toInt())
+                    var coord = Coord(sArr[1].toInt(), sArr[2].toInt())
                     when (sArr[0].toInt()) {
 
                         5 -> {
                             player2.boats[0].coords.add(coord)
+                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 5
+
                         }
                         4 -> {
                             player2.boats[4].coords.add(coord)
+                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 4
                         }
                         3 -> {
                             player2.boats[1].coords.add(coord)
+                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 3
                         }
                         2 -> {
                             player2.boats[2].coords.add(coord)
+                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 2
                         }
                         1 -> {
                             player2.boats[3].coords.add(coord)
+                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 1
                         }
 
                     }
@@ -285,23 +296,28 @@ class MainActivity : AppCompatActivity() {
                 val iterable = data.children
                 for(c in iterable) {
                     var sArr = c.value.toString().split(" ")
-                    var coord = Coord(sArr[2].toInt(), sArr[1].toInt())
+                    var coord = Coord(sArr[1].toInt(), sArr[2].toInt())
                     when (sArr[0].toInt()) {
 
                         5 -> {
                             player1.boats[0].coords.add(coord)
+                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 5
                         }
                         4 -> {
                             player1.boats[4].coords.add(coord)
+                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 4
                         }
                         3 -> {
                             player1.boats[1].coords.add(coord)
+                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 3
                         }
                         2 -> {
                             player1.boats[2].coords.add(coord)
+                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 2
                         }
                         1 -> {
                             player1.boats[3].coords.add(coord)
+                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 1
                         }
 
                     }
