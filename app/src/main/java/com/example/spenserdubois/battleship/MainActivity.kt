@@ -281,17 +281,25 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        player1.boats[0].coords = carrier2
-        player1.boats[1].coords = cruiser2
-        player1.boats[2].coords = sub2
-        player1.boats[3].coords = destroy2
-        player1.boats[4].coords = battle2
+        for(b in player1.boats)
+        {
+            b.coords.clear()
+        }
+        for(b2 in player2.boats)
+        {
+            b2.coords.clear()
+        }
+        player1.boats[0].coords.addAll(carrier2)
+        player1.boats[1].coords.addAll(cruiser2)
+        player1.boats[2].coords.addAll(sub2)
+        player1.boats[3].coords.addAll(destroy2)
+        player1.boats[4].coords.addAll(battle2)
 
-        player2.boats[0].coords = carrier
-        player2.boats[1].coords = cruiser
-        player2.boats[2].coords = sub
-        player2.boats[3].coords = destroy
-        player2.boats[4].coords = battle
+        player2.boats[0].coords.addAll(carrier)
+        player2.boats[1].coords.addAll(cruiser)
+        player2.boats[2].coords.addAll(sub)
+        player2.boats[3].coords.addAll(destroy)
+        player2.boats[4].coords.addAll(battle)
 
     }
 
