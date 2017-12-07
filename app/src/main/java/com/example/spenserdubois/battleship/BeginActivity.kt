@@ -33,10 +33,21 @@ class BeginActivity : AppCompatActivity() {
 
 
         val start = newBtn as Button
+        val btnLogout = btnLogout
 
         start.setOnClickListener{
             startNewGame()
         }
+
+        btnLogout.setOnClickListener {
+            firebaseAuth.signOut()
+            var intent = Intent(this@BeginActivity, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+
+
 
         myRef.child("Games").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {

@@ -33,7 +33,10 @@ class LoginActivity : AppCompatActivity(){
         firebaseAuth = FirebaseAuth.getInstance()
         if(firebaseAuth.currentUser != null)
         {
-
+            var intent = Intent(this@LoginActivity, BeginActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
         }
 
         btnReg = registerBtn
