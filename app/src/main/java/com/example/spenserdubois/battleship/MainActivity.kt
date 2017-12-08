@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
         }
         passBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                manager.turn++
                 hitMiss.text = ""
                 gameView.visibility = View.INVISIBLE
                 miniView.visibility = View.INVISIBLE
@@ -120,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         gameView.setOnNewShotListener { _, x, y ->
             var tempPlayer : Player
             var otherPlayer : Player
-            if(manager.turn >= 0 || manager.turn > 17)
+            if(++manager.turn > 0 || manager.turn > 17)
                 manager.updateState("In Progress")
             if(turn%2 == 0) {
                 manager.playerTurn = "Player 1"
