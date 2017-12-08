@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     var turn = 1
     private lateinit var manager : GameManager
     private lateinit var player : String
+    private lateinit var  passBtn : Button
     var gameID = ""
     var email = ""
 
@@ -42,9 +44,50 @@ class MainActivity : AppCompatActivity() {
         val gameView = boardView
         val miniView = miniView
         val hitMiss = HitMiss
-        val passBtn = Pass
+        passBtn = Pass
         val readyBtn = ready
         val readyPhrase = readyPhrase
+
+        
+        readyBtn.setOnClickListener{
+            gameView.visibility = View.VISIBLE
+            miniView.visibility = View.VISIBLE
+            readyBtn.visibility = View.INVISIBLE
+            readyPhrase.visibility = View.INVISIBLE
+            hitMiss.text = ""
+            gameView.canClick = true
+            passBtn.visibility = View.INVISIBLE
+            turn++
+            var tempPlayer : Player
+            var otherPlayer : Player
+            if(turn%2 == 0) {
+                tempPlayer = player2
+                otherPlayer = player1
+            }
+            else {
+                tempPlayer = player1
+                otherPlayer = player2
+            }
+            miniView.setHitPath(otherPlayer.miniHitPath)
+            miniView.setMissPath(otherPlayer.miniMissPath)
+            miniView.drawBoats(otherPlayer.boats)
+            miniView.invalidate()
+            gameView.setSunkPath(tempPlayer.sunkPath)
+            gameView.setHitPath(tempPlayer.hitPath)
+            gameView.setMissPath(tempPlayer.missPath)
+            gameView.invalidate()
+        }
+        passBtn.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                hitMiss.text = ""
+                gameView.visibility = View.INVISIBLE
+                miniView.visibility = View.INVISIBLE
+                passBtn.visibility = View.INVISIBLE
+                readyPhrase.visibility = View.VISIBLE
+            }
+
+        })
+
         var toDB = DatabaseElement()
 
 
@@ -60,10 +103,7 @@ class MainActivity : AppCompatActivity() {
         {
             updateManagerForPlayer2()
             manager = GameManager(player1, player2, toDB)
-            miniView.drawBoats(player1.boats)
-            passBtn.visibility = View.VISIBLE
-            passBtn.performClick()
-
+            //miniView.drawBoats(player1.boats)
         }
         else
         {
@@ -154,48 +194,6 @@ class MainActivity : AppCompatActivity() {
             save(manager)
         }
 
-        passBtn.setOnClickListener{
-            hitMiss.text = ""
-            gameView.visibility = View.INVISIBLE
-            miniView.visibility = View.INVISIBLE
-            passBtn.visibility = View.INVISIBLE
-            if(turn % 2 == 0)
-                readyPhrase.text = "\n\nIs Player 1\nReady?"
-            else
-                readyPhrase.text = "\n\nIs Player 2\nReady?"
-            readyBtn.visibility = View.VISIBLE
-            readyPhrase.visibility = View.VISIBLE
-
-        }
-
-        readyBtn.setOnClickListener{
-            gameView.visibility = View.VISIBLE
-            miniView.visibility = View.VISIBLE
-            readyBtn.visibility = View.INVISIBLE
-            readyPhrase.visibility = View.INVISIBLE
-            hitMiss.text = ""
-            gameView.canClick = true
-            passBtn.visibility = View.INVISIBLE
-            turn++
-            var tempPlayer : Player
-            var otherPlayer : Player
-            if(turn%2 == 0) {
-                tempPlayer = player2
-                otherPlayer = player1
-            }
-            else {
-                tempPlayer = player1
-                otherPlayer = player2
-            }
-            miniView.setHitPath(otherPlayer.miniHitPath)
-            miniView.setMissPath(otherPlayer.miniMissPath)
-            miniView.drawBoats(otherPlayer.boats)
-            miniView.invalidate()
-            gameView.setSunkPath(tempPlayer.sunkPath)
-            gameView.setHitPath(tempPlayer.hitPath)
-            gameView.setMissPath(tempPlayer.missPath)
-            gameView.invalidate()
-        }
     }
 
 
@@ -330,6 +328,11 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+        passBtn.visibility = View.VISIBLE
+        passBtn.performClick()
+        passBtn.isPressed = true
+        passBtn.invalidate()
+
 
     }
 
