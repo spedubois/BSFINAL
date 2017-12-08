@@ -12,6 +12,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * This is the main activity where a game of battle ship is played.
+ */
 class MainActivity : AppCompatActivity() {
 
     var player1 = Player(0)
@@ -24,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textWaitToShoot : TextView
     var gameID = ""
     var email = ""
-
 
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var firebaseDB : DatabaseReference
@@ -106,6 +108,8 @@ class MainActivity : AppCompatActivity() {
         player2 = Player(miniView.layoutParams.width/10)
         player1.name = "Player 1"
         player2.name = "Player 2"
+
+        //If this is player 2, we update the info in OUR manager to the manager in the firebase database.
         if(player.equals("Player2"))
         {
             updateManagerForPlayer2(player1, player2)
@@ -123,6 +127,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        // Listens for shot to have been fired.
         gameView.setOnNewShotListener { _, x, y ->
             var tempPlayer : Player
             var otherPlayer : Player
@@ -168,7 +173,7 @@ class MainActivity : AppCompatActivity() {
                     gameView.addSunkPath(tempPlayer.getBoat(shot).coords)
                     tempPlayer.sunkPath = gameView.getSunkPath()
                 }
-                else
+                else // If a players shot hit.
                 {
                     tempPlayer.hits++
                     hitMiss.setTextColor(Color.RED)
@@ -184,7 +189,7 @@ class MainActivity : AppCompatActivity() {
                     passBtn.visibility = View.VISIBLE
                 }
             }
-            else
+            else // If a player shot MISSED
             {
                 hitMiss.setTextColor(Color.DKGRAY)
                 hitMiss.text = "MISS!"

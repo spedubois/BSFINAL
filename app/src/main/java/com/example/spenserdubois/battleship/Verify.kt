@@ -10,6 +10,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_verify.*
 
+/**
+ * Activity is used to verify a users emaul
+ */
 class Verify : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +41,9 @@ class Verify : AppCompatActivity() {
             btn_send.isEnabled = false
 
 
-
+            /**
+             * Sends an email request to verify the uusers email address
+             */
             user.sendEmailVerification().addOnCompleteListener { task: Task<Void> ->
                 if(task.isSuccessful) {
                     Toast.makeText(this@Verify, "Verification sent to: " + user.email, Toast.LENGTH_SHORT).show()

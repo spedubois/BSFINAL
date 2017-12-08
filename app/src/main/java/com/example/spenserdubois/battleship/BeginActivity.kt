@@ -13,7 +13,9 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_begin.*
 import java.util.*
 
-
+/**
+ * This Activity is where the user can seect to join a game, create a new one, or log out
+ */
 class BeginActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewLayoutManager : LinearLayoutManager
@@ -39,6 +41,9 @@ class BeginActivity : AppCompatActivity() {
             startNewGame()
         }
 
+        /**
+         * Logs current user out
+         */
         btnLogout.setOnClickListener {
             firebaseAuth.signOut()
             var intent = Intent(this@BeginActivity, LoginActivity::class.java)
@@ -47,7 +52,9 @@ class BeginActivity : AppCompatActivity() {
         }
 
 
-
+        /**
+         * Firebase database listens for the database to change. Updates a recycler view of games for users to see.
+         */
         myRef.child("Games").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
 
@@ -64,6 +71,9 @@ class BeginActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Updates the view when new games/changes have been made to the database.
+     */
     private fun updateView(children: MutableIterable<DataSnapshot>) {
         recyclerViewLayoutManager  = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)

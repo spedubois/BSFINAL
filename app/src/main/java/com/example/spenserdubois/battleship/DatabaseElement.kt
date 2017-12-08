@@ -1,7 +1,7 @@
 package com.example.spenserdubois.battleship
 
 /**
- * Created by Spenser DuBois on 12/5/2017.
+ * Created by Spenser DuBois on 12/5/2017. Used to store information tot he firebase database.
  */
 class DatabaseElement {
     var turn : String = ""

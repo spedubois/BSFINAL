@@ -16,7 +16,9 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.*
 import kotlinx.android.synthetic.main.activity_login.*
 
-
+/**
+ * First Activity player encounters. Users enters a valid email and password to create an account,
+ */
 class LoginActivity : AppCompatActivity(){
 
     private lateinit var btnReg : Button
@@ -53,6 +55,7 @@ class LoginActivity : AppCompatActivity(){
         }
     }
 
+    // Async task to run login in background of main thread.
     inner class  myAsync : AsyncTask<String, String, String>()
     {
         override fun doInBackground(vararg params: String?): String {
@@ -96,6 +99,9 @@ class LoginActivity : AppCompatActivity(){
 
     }
 
+    /**
+     * Once user ahs entered in all the login information,
+     */
     fun login()
     {
         val email : String = textEmail.text.toString().trim()
@@ -112,29 +118,4 @@ class LoginActivity : AppCompatActivity(){
         }
         myAsync().execute()
     }
-
-
-    fun checkPassword(s : String) : Boolean
-    {
-        var upper : Boolean = false
-        var number : Boolean = false
-        var special : Boolean = false
-        val sArr = s.toCharArray()
-        for(i in 0 until s.length)
-        {
-            if(s[i] >= 'A' && s[i] <= 'Z')
-                upper = true
-            else if(s[i] >= '0' && s[i] <= '9')
-                number = true
-            else if((s[i] < 'A' && s[i] > '9')||(s[i] > 'z')||(s[i] < '0'))
-                special = true
-
-            if(upper&&number&&special)
-                return true
-        }
-        return false
-    }
-
-
-
 }

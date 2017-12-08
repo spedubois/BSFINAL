@@ -11,7 +11,7 @@ import android.view.View
 
 @Suppress("UNREACHABLE_CODE")
 /**
- * Created by Spenser DuBois on 11/2/2017.
+ * Created by Spenser DuBois on 11/2/2017. Represents the game board.
  */
 class boardView : View {
     constructor(context: Context?) : super(context)
@@ -73,6 +73,7 @@ class boardView : View {
         this.onNewShotListener = onNewShotListener
     }
 
+    //Adds a listener for hen a shot has been taken by the user
     fun setOnNewShotListener(onNewShotListener:((boardView: boardView, x : Int, y : Int)->Unit)){
         this.onNewShotListener = object : OnNewShotListener{
             override fun OnNewshot(boardView: boardView, x : Int, y : Int) {
@@ -85,6 +86,7 @@ class boardView : View {
     {
         onNewShotListener = null
     }
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         missPaint.style = Paint.Style.FILL
@@ -116,6 +118,9 @@ class boardView : View {
         canvas.drawPath(path,paint)
     }
 
+    /**
+     * Generates the frame surrouding the game view the grid that will be put over the game view
+     */
     fun genFrame(w : Int, h : Int)
     {
         gameHeight = h
@@ -175,6 +180,9 @@ class boardView : View {
         return super.onTouchEvent(event)
     }
 
+    /**
+     * Adds a path for all sunken  ahipa
+     */
     fun addSunkPath(coords : ArrayList<Coord>)
     {
         for (c in coords)
