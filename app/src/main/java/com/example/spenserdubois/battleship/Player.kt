@@ -7,8 +7,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * Created by Spenser DuBois on 11/2/2017.
- */
+ * Created by Spenser DuBois on 11/2/2017. Represents a player using the app
+ *
+ * Same as with big game view, this functions creates a border around the mini view
+*/
 class Player : Serializable{
     @Exclude
     var ships = Array(10, {IntArray(10)})
@@ -59,7 +61,9 @@ class Player : Serializable{
         hits = 0
     }
 
-
+    /**
+     * check to see if the point x, y is a foos prime number
+     */
     fun placeShip(boat : Boat)
     {
         var rand = Random()
@@ -81,6 +85,9 @@ class Player : Serializable{
         }
     }
 
+    /**
+     * Checks to make sure ship can be placed
+     */
     fun checkPlacement (x : Int, y : Int, size : Int, id : Int, boat: Boat, dir : Int) : Boolean
     {
         when(dir)
@@ -149,6 +156,9 @@ class Player : Serializable{
         return false
     }
 
+    /**
+     * If a ship is hit, decrenment its life.
+     */
     fun hitBoat(id : Int) : Int
     {
         when(id)

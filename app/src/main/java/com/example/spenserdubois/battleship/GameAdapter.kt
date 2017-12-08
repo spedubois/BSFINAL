@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.game_text_view.*
 
 @Suppress("UNREACHABLE_CODE")
 /**
- * Created by Spenser DuBois on 11/5/2017.
+ * Created by Spenser DuBois on 11/5/2017. Custom Adapter for the rectcler view
  */
 class GameAdapter(private val dataset: Array<CustomAdapterItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 

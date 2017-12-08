@@ -12,6 +12,9 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_choose.*
 import kotlinx.android.synthetic.main.activity_login.*
 
+/**
+ * This activity where the user chooses to eith join a game, or go back
+ */
 class ChooseActivity : AppCompatActivity() {
 
     private lateinit var fireAuth : FirebaseAuth
@@ -48,6 +51,8 @@ class ChooseActivity : AppCompatActivity() {
             val intent = Intent(this@ChooseActivity, BeginActivity::class.java)
             startActivity(intent)
         }
+
+        //If clicked, the user is send to the Main activity to polay the game.
         conBtn.setOnClickListener{
             fireDB.child("Games").child(manager.name).child("Player2").setValue(user.email)
             val intent = Intent(this@ChooseActivity, MainActivity::class.java)

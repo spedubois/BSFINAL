@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.util.*
 
 /**
- * Created by Spenser DuBois on 11/4/2017.
+ * Created by Spenser DuBois on 11/4/2017. Manages the game that is being played betwwen two users
  */
 class GameManager : Serializable {
     var state : String

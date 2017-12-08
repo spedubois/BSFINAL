@@ -1,7 +1,7 @@
 package com.example.spenserdubois.battleship
 
 /**
- * Created by Spenser DuBois on 12/6/2017.
+ * Created by Spenser DuBois on 12/6/2017. Small class to add sometging to firebase database.
  */
 class initialDbEntry {
     var p1Left:Long = 5

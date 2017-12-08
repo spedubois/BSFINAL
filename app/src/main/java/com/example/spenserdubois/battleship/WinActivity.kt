@@ -7,6 +7,10 @@ import android.widget.Button
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_win.*
 
+/**
+ * This Activity is used when a player wins. The players see this screen and have the ability to log out, or view
+ * existinf
+ */
 class WinActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

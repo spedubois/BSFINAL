@@ -4,7 +4,7 @@ import android.graphics.Path
 import java.io.Serializable
 
 /**
- * Created by Spenser DuBois on 11/4/2017.
+ * Created by Spenser DuBois on 11/4/2017. Used to hold rectangles that will later be used in-game
  */
 class MyPath : Path, Serializable {
 

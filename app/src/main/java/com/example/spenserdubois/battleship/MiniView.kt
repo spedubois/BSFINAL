@@ -9,7 +9,8 @@ import android.util.AttributeSet
 import android.view.View
 
 /**
- * Created by Spenser DuBois on 11/3/2017.
+ * Created by Spenser DuBois on 11/3/2017. Represents a smaller view from the game board.
+ * This View shows the user where the opponent has fired and also  where the users ships are
  */
 class MiniView : View {
     constructor(context: Context?) : super(context)
@@ -114,6 +115,9 @@ class MiniView : View {
         canvas.drawPath(path,paint)
     }
 
+    /**
+     * Same as with big game view, this functions creates a border around the mini view
+     */
     fun genFrame(w : Int, h : Int)
     {
         gameHeight = h
@@ -133,6 +137,9 @@ class MiniView : View {
         invalidate()
     }
 
+    /**
+     * Same as with big game view, this functions creates the grid over the game view.
+     */
     fun genGrid(s : Int, w : Int, h : Int)
     {
         for(i in 1 until 10)
@@ -147,6 +154,9 @@ class MiniView : View {
         }
     }
 
+    /**
+     * Draws the boats to the game View
+     */
     fun drawBoats(boats : ArrayList<Boat>)
     {
         for(b in boats)
