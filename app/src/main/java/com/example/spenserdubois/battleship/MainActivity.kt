@@ -93,7 +93,10 @@ class MainActivity : AppCompatActivity() {
                 if(data !is DataSnapshot)
                     return
 
-
+                if(manager.playerTurn.equals("Player 1"))
+                    manager.playerTurn = "Player 2"
+                else
+                    manager.playerTurn = "Player 1"
                 if(data.value.toString().equals(player))
                 {
                     textWaitToShoot.visibility = View.INVISIBLE
@@ -140,6 +143,7 @@ class MainActivity : AppCompatActivity() {
         //If this is player 2, we update the info in OUR manager to the manager in the firebase database.
         if(player.equals("Player2"))
         {
+            manager.turn=1
             updateManagerForPlayer2(player1, player2)
             manager = GameManager(player1, player2, toDB)
             miniView.drawBoats(player1.boats)
