@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         {
             updateManagerForPlayer2()
             manager = GameManager(player1, player2, toDB)
-            //miniView.drawBoats(player1.boats)
+            miniView.drawBoats(player1.boats)
         }
         else
         {
@@ -338,7 +338,7 @@ class MainActivity : AppCompatActivity() {
 
         })
         var gameView = boardView
-        gameView.isEnabled = false
+        gameView.canClick = false
         textWaitToShoot.visibility = View.VISIBLE
     }
 
