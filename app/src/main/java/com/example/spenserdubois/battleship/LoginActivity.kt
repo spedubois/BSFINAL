@@ -89,6 +89,7 @@ class LoginActivity : AppCompatActivity(){
                                 Toast.makeText(this@LoginActivity, "Error logging in, Please try again", Toast.LENGTH_LONG).show()
                             }
                         }
+
                     })
             return "GOOD"
         }
