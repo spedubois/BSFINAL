@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var manager : GameManager
     private lateinit var player : String
     private lateinit var  passBtn : Button
+    private lateinit var readyBtn : Button
+    private lateinit var textWaitToShoot : TextView
     var gameID = ""
     var email = ""
 
@@ -30,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        textWaitToShoot = textWaitForShot
+        textWaitToShoot.visibility = View.INVISIBLE
         var intent = intent
         gameID = intent.getStringExtra("GameID").toString()
         player = intent.getStringExtra("Player")
@@ -45,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         val miniView = miniView
         val hitMiss = HitMiss
         passBtn = Pass
-        val readyBtn = ready
+        readyBtn = ready
         val readyPhrase = readyPhrase
 
 
@@ -79,11 +84,13 @@ class MainActivity : AppCompatActivity() {
         }
         passBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
+
                 hitMiss.text = ""
                 gameView.visibility = View.INVISIBLE
                 miniView.visibility = View.INVISIBLE
                 passBtn.visibility = View.INVISIBLE
                 readyPhrase.visibility = View.VISIBLE
+                readyBtn.visibility = View.VISIBLE
             }
 
         })
@@ -191,6 +198,8 @@ class MainActivity : AppCompatActivity() {
                 gameView.canClick = false
                 passBtn.visibility = View.VISIBLE
             }
+            gameView.isEnabled = false
+            textWaitToShoot.visibility = View.VISIBLE
             save(manager)
         }
 
@@ -328,12 +337,9 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-        passBtn.visibility = View.VISIBLE
-        passBtn.performClick()
-        passBtn.isPressed = true
-        passBtn.invalidate()
-
-
+        var gameView = boardView
+        gameView.isEnabled = false
+        textWaitToShoot.visibility = View.VISIBLE
     }
 
     fun save(manager: GameManager)
