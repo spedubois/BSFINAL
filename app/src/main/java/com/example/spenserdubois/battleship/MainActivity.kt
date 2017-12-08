@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         player2.name = "Player 2"
         if(player.equals("Player2"))
         {
-            updateManagerForPlayer2()
+            updateManagerForPlayer2(player1, player2)
             manager = GameManager(player1, player2, toDB)
             miniView.drawBoats(player1.boats)
         }
@@ -235,7 +235,7 @@ class MainActivity : AppCompatActivity() {
         boardView.invalidate()
     }
 
-    private fun updateManagerForPlayer2() {
+    private fun updateManagerForPlayer2(pplayer1 : Player, pplayer2: Player) {
         //Player 1 ships. Will be updated from firebase DB so both players have the same view
 
         firebaseDB.child("Games").child(gameID).child("Manager").child("boatPos1").addListenerForSingleValueEvent(object:ValueEventListener{
@@ -250,9 +250,9 @@ class MainActivity : AppCompatActivity() {
                 for(i in 0 until 10)
                 {
                     for(o in 0 until 10)
-                        player2.ships[i][o] = 0
+                        pplayer2.ships[i][o] = 0
                 }
-                for (b2 in player2.boats) {
+                for (b2 in pplayer2.boats) {
                     b2.coords.clear()
                 }
                 val iterable = data.children
@@ -262,25 +262,25 @@ class MainActivity : AppCompatActivity() {
                     when (sArr[0].toInt()) {
 
                         5 -> {
-                            player2.boats[0].coords.add(coord)
-                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 5
+                            pplayer2.boats[0].coords.add(coord)
+                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 5
 
                         }
                         4 -> {
-                            player2.boats[4].coords.add(coord)
-                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 4
+                            pplayer2.boats[4].coords.add(coord)
+                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 4
                         }
                         3 -> {
-                            player2.boats[1].coords.add(coord)
-                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 3
+                            pplayer2.boats[1].coords.add(coord)
+                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 3
                         }
                         2 -> {
-                            player2.boats[2].coords.add(coord)
-                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 2
+                            pplayer2.boats[2].coords.add(coord)
+                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 2
                         }
                         1 -> {
-                            player2.boats[3].coords.add(coord)
-                            player2.ships[sArr[2].toInt()][sArr[1].toInt()] = 1
+                            pplayer2.boats[3].coords.add(coord)
+                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 1
                         }
 
                     }
@@ -312,24 +312,24 @@ class MainActivity : AppCompatActivity() {
                     when (sArr[0].toInt()) {
 
                         5 -> {
-                            player1.boats[0].coords.add(coord)
-                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 5
+                            pplayer1.boats[0].coords.add(coord)
+                            pplayer1.ships[sArr[2].toInt()][sArr[1].toInt()] = 5
                         }
                         4 -> {
-                            player1.boats[4].coords.add(coord)
+                            pplayer1.boats[4].coords.add(coord)
                             player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 4
                         }
                         3 -> {
-                            player1.boats[1].coords.add(coord)
-                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 3
+                            pplayer1.boats[1].coords.add(coord)
+                            pplayer1.ships[sArr[2].toInt()][sArr[1].toInt()] = 3
                         }
                         2 -> {
-                            player1.boats[2].coords.add(coord)
-                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 2
+                            pplayer1.boats[2].coords.add(coord)
+                            pplayer1.ships[sArr[2].toInt()][sArr[1].toInt()] = 2
                         }
                         1 -> {
-                            player1.boats[3].coords.add(coord)
-                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 1
+                            pplayer1.boats[3].coords.add(coord)
+                            pplayer1.ships[sArr[2].toInt()][sArr[1].toInt()] = 1
                         }
 
                     }
