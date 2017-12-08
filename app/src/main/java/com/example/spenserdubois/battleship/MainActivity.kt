@@ -97,10 +97,7 @@ class MainActivity : AppCompatActivity() {
                 if(data !is DataSnapshot)
                     return
 
-                if(player.equals("Player 1"))
-                    manager.playerTurn = "Player 2"
-                else 
-                    manager.playerTurn = "Player 1"
+
 
 
                 if(data.value.toString().equals(player))
@@ -407,6 +404,10 @@ class MainActivity : AppCompatActivity() {
         //Update players mini view and main view with misses, hits, sinks
         updateDatabaseElement(test)
 
+        if(player.equals("Player 1"))
+            manager.playerTurn = "Player 2"
+        else
+            manager.playerTurn = "Player 1"
         test.state = manager.state
         test.turn = manager.playerTurn
         firebaseDB.child("Games").child(gameID).child("Manager").setValue(test)
