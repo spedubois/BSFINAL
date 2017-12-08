@@ -84,6 +84,10 @@ class MainActivity : AppCompatActivity() {
             gameView.setMissPath(tempPlayer.missPath)
             gameView.invalidate()
         }
+
+
+
+
         firebaseDB.child("Games").child(gameID).child("Manager").child("turn").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -93,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                 if(data !is DataSnapshot)
                     return
 
-
+                manager.turn++
                 if(data.value.toString().equals(player))
                 {
                     textWaitToShoot.visibility = View.INVISIBLE
