@@ -9,6 +9,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_wait.*
 
+/**
+ * Activity where the user waits for another player to join his game after creating a new game.
+ */
 class Wait : AppCompatActivity() {
 
     private lateinit var fireAuth : FirebaseAuth
@@ -44,7 +47,7 @@ class Wait : AppCompatActivity() {
                 if(!p2Name.equals("") && !canceled) {
                     var intent = Intent(this@Wait, MainActivity::class.java)
                     intent.putExtra("GameID", s)
-                    intent.putExtra("Player", "Player1")
+                    intent.putExtra("Player", "Player 1")
                     startActivity(intent)
                     finish()
                     return
