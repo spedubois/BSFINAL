@@ -97,7 +97,12 @@ class MainActivity : AppCompatActivity() {
                 if(data !is DataSnapshot)
                     return
 
-                manager.turn++
+                if(player.equals("Player 1"))
+                    manager.playerTurn = "Player 2"
+                else 
+                    manager.playerTurn = "Player 1"
+
+
                 if(data.value.toString().equals(player))
                 {
                     textWaitToShoot.visibility = View.INVISIBLE
