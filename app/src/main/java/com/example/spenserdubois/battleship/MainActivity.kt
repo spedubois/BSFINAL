@@ -84,6 +84,34 @@ class MainActivity : AppCompatActivity() {
             gameView.setMissPath(tempPlayer.missPath)
             gameView.invalidate()
         }
+        firebaseDB.child("Games").child(gameID).child("Manager").child("turn").addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(data: DataSnapshot?) {
+                if(data !is DataSnapshot)
+                    return
+
+
+                if(data.value.toString().equals(player))
+                {
+                    textWaitToShoot.visibility = View.INVISIBLE
+
+                    var btnPass = passBtn
+                    hitMiss.visibility = View.INVISIBLE
+                    btnPass.visibility = View.INVISIBLE
+                    var gameV = boardView
+                    gameV.canClick = true
+                }
+                else
+                {
+                    gameView.canClick = false
+                    textWaitToShoot.visibility = View.VISIBLE
+                }
+            }
+
+        })
         passBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
@@ -203,6 +231,7 @@ class MainActivity : AppCompatActivity() {
                 gameView.canClick = false
                 passBtn.visibility = View.VISIBLE
             }
+            passBtn.visibility = View.INVISIBLE
             gameView.isEnabled = false
             textWaitToShoot.visibility = View.VISIBLE
             save(manager)
