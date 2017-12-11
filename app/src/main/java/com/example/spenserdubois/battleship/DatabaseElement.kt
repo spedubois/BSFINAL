@@ -24,6 +24,7 @@ class DatabaseElement {
     var p2Left : Long = 5
     var p1HitsTaken: Int = 0
     var p2HitsTaken: Int = 0
+    var turnNum = 0;
 
     constructor(){
         testList = mutableListOf()

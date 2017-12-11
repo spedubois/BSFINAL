@@ -102,8 +102,6 @@ class BeginActivity : AppCompatActivity() {
 
                     recyclerViewDataset.add(GameAdapter.BSGame(gm))
 
-
-
             }
 
             recyclerViewDataset.toTypedArray()

@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private var shotTaken : Boolean = false
     var gameID = ""
     var email = ""
+    private var firstTurn = true
 
     private lateinit var firebaseAuth : FirebaseAuth
     private lateinit var firebaseDB : DatabaseReference
@@ -175,13 +176,13 @@ class MainActivity : AppCompatActivity() {
             if(++manager.turn > 0 || manager.turn > 17)
                 manager.updateState("In Progress")
             if(turn%2 == 0) {
-                // update the game board and the mini view dependking on ehich players turn it is.
-                manager.playerTurn = "Player 1"
+                // update the game board and the mini view depending on which players turn it is.
+                manager.playerTurn = "Player 2"
                 tempPlayer = player2
                 otherPlayer = player1
             }
             else {
-                manager.playerTurn="Player 2"
+                manager.playerTurn="Player 1"
                 tempPlayer = player1
                 otherPlayer = player2
             }
@@ -385,12 +386,16 @@ class MainActivity : AppCompatActivity() {
 
         //Update players mini view and main view with misses, hits, sinks
         updateDatabaseElement(test)
-        if(player.equals("Player 1"))
-            manager.playerTurn = "Player 2"
-        else
-            manager.playerTurn = "Player 1"
+        if(!firstTurn) {
+            firstTurn = false
+            if (player.equals("Player 1"))
+                manager.playerTurn = "Player 2"
+            else
+                manager.playerTurn = "Player 1"
+        }
         test.state = manager.state
         test.turn = manager.playerTurn
+        test.turnNum = manager.turn
         test.winner = manager.winner
         test.p1HitsTaken = manager.players[0].hits
         test.p2HitsTaken = manager.players[1].hits
