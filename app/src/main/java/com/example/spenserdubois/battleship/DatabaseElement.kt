@@ -22,6 +22,8 @@ class DatabaseElement {
     var winner = ""
     var p1Left : Long = 5
     var p2Left : Long = 5
+    var p1HitsTaken: Int = 0
+    var p2HitsTaken: Int = 0
 
     constructor(){
         testList = mutableListOf()
@@ -38,6 +40,4 @@ class DatabaseElement {
         P2Miss= mutableListOf()
         P2Sunk= mutableListOf()
     }
-
-
 }
