@@ -101,8 +101,6 @@ class BeginActivity : AppCompatActivity() {
                     gm.playerTurn = c.child("Manager").child("turn").value.toString()
 
                     recyclerViewDataset.add(GameAdapter.BSGame(gm))
-                }
-
 
             }
 
