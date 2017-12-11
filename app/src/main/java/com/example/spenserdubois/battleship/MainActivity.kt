@@ -211,9 +211,9 @@ class MainActivity : AppCompatActivity() {
                                 for(i in 0 until 10)
                                 {
                                     for(o in 0 until 10)
-                                        manager.players[1].ships[i][o] = 0
+                                        manager.players[0].ships[i][o] = 0
                                 }
-                                for (b2 in manager.players[1].boats) {
+                                for (b2 in manager.players[0].boats) {
                                     b2.coords.clear()
                                 }
                                 val iterable = child.children
@@ -252,7 +252,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
-            miniView.drawBoats(player1.boats)
+            miniView.drawBoats(player2.boats)
             miniView.invalidate()
             firstTurn = false
             manager.turn=0
@@ -351,117 +351,6 @@ class MainActivity : AppCompatActivity() {
             save(manager)
         }
 
-    }
-
-
-    /**
-     * This Listener only happens once. It updates Player 2 to have the same boat layout and game state as player 1. This only happen once, at the beginning of the game.
-     */
-    private fun updateManagerForPlayer2() {
-        //Player 1 ships. Will be updated from firebase DB so both players have the same view
-
-        firebaseDB.child("Games").child(gameID).child("Manager").child("boatPos1").addListenerForSingleValueEvent(object:ValueEventListener{
-            override fun onCancelled(p0: DatabaseError?) {
-
-            }
-
-            override fun onDataChange(data: DataSnapshot?) {
-                if (data !is DataSnapshot)
-                    return
-
-                for(i in 0 until 10)
-                {
-                    for(o in 0 until 10)
-                        manager.players[1].ships[i][o] = 0
-                }
-                for (b2 in manager.players[1].boats) {
-                    b2.coords.clear()
-                }
-                val iterable = data.children
-                for (c in iterable) {
-                    var sArr = c.value.toString().split(" ")
-                    var coord = Coord(sArr[1].toInt(), sArr[2].toInt())
-                    when (sArr[0].toInt()) {
-
-                        5 -> {
-                            manager.players[1].boats[0].coords.add(coord)
-                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 5
-
-                        }
-                        4 -> {
-                            manager.players[1].boats[4].coords.add(coord)
-                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 4
-                        }
-                        3 -> {
-                            manager.players[1].boats[1].coords.add(coord)
-                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 3
-                        }
-                        2 -> {
-                            manager.players[1].boats[2].coords.add(coord)
-                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 2
-                        }
-                        1 -> {
-                            manager.players[1].boats[3].coords.add(coord)
-                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 1
-                        }
-
-                    }
-                }
-            }
-
-        })
-
-        firebaseDB.child("Games").child(gameID).child("Manager").child("boatPos2").addListenerForSingleValueEvent(object:ValueEventListener{
-            override fun onCancelled(p0: DatabaseError?) {
-
-            }
-
-            override fun onDataChange(data: DataSnapshot?) {
-                if(data !is DataSnapshot)
-                    return
-                for(i in 0 until 10)
-                {
-                    for(o in 0 until 10)
-                        manager.players[0].ships[i][o] = 0
-                }
-                for (b2 in manager.players[0].boats) {
-                    b2.coords.clear()
-                }
-                val iterable = data.children
-                for(c in iterable) {
-                    var sArr = c.value.toString().split(" ")
-                    var coord = Coord(sArr[1].toInt(), sArr[2].toInt())
-                    when (sArr[0].toInt()) {
-
-                        5 -> {
-                            manager.players[0].boats[0].coords.add(coord)
-                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 5
-                        }
-                        4 -> {
-                            manager.players[0].boats[4].coords.add(coord)
-                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 4
-                        }
-                        3 -> {
-                            manager.players[0].boats[1].coords.add(coord)
-                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 3
-                        }
-                        2 -> {
-                            manager.players[0].boats[2].coords.add(coord)
-                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 2
-                        }
-                        1 -> {
-                            manager.players[0].boats[3].coords.add(coord)
-                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 1
-                        }
-
-                    }
-                }
-            }
-
-        })
-        var gameView = boardView
-        gameView.canClick = false
-        textWaitToShoot.visibility = View.VISIBLE
     }
 
     fun save(manager: GameManager)
@@ -657,7 +546,7 @@ class MainActivity : AppCompatActivity() {
         })
         var tempPlayer : Player
         var otherPlayer : Player
-        if(player.equals("Player 2")) {
+        if(player.equals("Player 1")) {
 
             tempPlayer = player2
             otherPlayer = player1
