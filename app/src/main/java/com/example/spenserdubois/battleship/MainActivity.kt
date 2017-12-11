@@ -156,6 +156,8 @@ class MainActivity : AppCompatActivity() {
             updateManagerForPlayer2(player1, player2)
             manager = GameManager(player1, player2, toDB)
             miniView.drawBoats(player1.boats)
+            miniView.invalidate()
+            firstTurn = false
             manager.turn=0
         }
         else
@@ -387,12 +389,12 @@ class MainActivity : AppCompatActivity() {
         //Update players mini view and main view with misses, hits, sinks
         updateDatabaseElement(test)
         if(!firstTurn) {
-            firstTurn = false
             if (player.equals("Player 1"))
                 manager.playerTurn = "Player 2"
             else
                 manager.playerTurn = "Player 1"
         }
+        firstTurn = false
         test.state = manager.state
         test.turn = manager.playerTurn
         test.turnNum = manager.turn
