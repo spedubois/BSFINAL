@@ -83,11 +83,13 @@ class BeginActivity : AppCompatActivity() {
             val recyclerViewDataset: MutableList<GameAdapter.CustomAdapterItem> = mutableListOf()
             for(c in children)
             {
-                if(!(c.child("Manager").child("state").value.toString().equals("Completed") &&
-                        (c.child("Player1").value.toString().equals(player1) || c.child("Player2").value.toString().equals(player1)))) {
 
-                    continue
+                if(c.child("Manager").child("state").value.toString().equals("Completed"))
+                {
+                    if(!(c.child("Player1").value.toString().equals(player1) || c.child("Player2").value.toString().equals(player1)))
+                        continue
                 }
+
                     var gm = GameManager()
                     gm.name = c.key.toString()
                     gm.players[0].name = c.child("Player1").value.toString()
@@ -99,6 +101,7 @@ class BeginActivity : AppCompatActivity() {
                     gm.playerTurn = c.child("Manager").child("turn").value.toString()
 
                     recyclerViewDataset.add(GameAdapter.BSGame(gm))
+
 
 
             }
