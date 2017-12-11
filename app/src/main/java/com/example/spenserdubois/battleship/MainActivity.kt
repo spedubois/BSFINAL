@@ -256,7 +256,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
-            miniView.drawBoats(player1.boats)
+            miniView.drawBoats(manager.players[0].boats)
             miniView.invalidate()
             firstTurn = false
             manager.turn=0
