@@ -154,6 +154,10 @@ class MainActivity : AppCompatActivity() {
         if(player.equals("Player 2"))
         {
             manager = GameManager(player1, player2, toDB)
+
+            /**
+             * This litener updates player to to have the same game state in terms of boat position as player 1
+             */
             firebaseDB.child("Games").child(gameID).child("Manager").addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError?) {
 
@@ -252,7 +256,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
-            miniView.drawBoats(player2.boats)
+            miniView.drawBoats(player1.boats)
             miniView.invalidate()
             firstTurn = false
             manager.turn=0
@@ -544,16 +548,12 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-        var tempPlayer : Player
         var otherPlayer : Player
-        if(player.equals("Player 1")) {
+        if(player.equals("Player 2")) {
 
-            tempPlayer = player2
             otherPlayer = player1
         }
         else {
-
-            tempPlayer = player1
             otherPlayer = player2
         }
         miniView.setHitPath(otherPlayer.miniHitPath)
