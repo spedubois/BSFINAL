@@ -153,9 +153,8 @@ class MainActivity : AppCompatActivity() {
         //If this is player 2, we update the info in OUR manager to the manager in the firebase database.
         if(player.equals("Player 2"))
         {
-
-            updateManagerForPlayer2(player1, player2)
             manager = GameManager(player1, player2, toDB)
+            updateManagerForPlayer2()
             miniView.drawBoats(player1.boats)
             miniView.invalidate()
             firstTurn = false
@@ -261,7 +260,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * This Listener only happens once. It updates Player 2 to have the same boat layout and game state as player 1. This only happen once, at the beginning of the game.
      */
-    private fun updateManagerForPlayer2(pplayer1 : Player, pplayer2: Player) {
+    private fun updateManagerForPlayer2() {
         //Player 1 ships. Will be updated from firebase DB so both players have the same view
 
         firebaseDB.child("Games").child(gameID).child("Manager").child("boatPos1").addListenerForSingleValueEvent(object:ValueEventListener{
@@ -276,9 +275,9 @@ class MainActivity : AppCompatActivity() {
                 for(i in 0 until 10)
                 {
                     for(o in 0 until 10)
-                        pplayer2.ships[i][o] = 0
+                        manager.players[1].ships[i][o] = 0
                 }
-                for (b2 in pplayer2.boats) {
+                for (b2 in manager.players[1].boats) {
                     b2.coords.clear()
                 }
                 val iterable = data.children
@@ -288,25 +287,25 @@ class MainActivity : AppCompatActivity() {
                     when (sArr[0].toInt()) {
 
                         5 -> {
-                            pplayer2.boats[0].coords.add(coord)
-                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 5
+                            manager.players[1].boats[0].coords.add(coord)
+                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 5
 
                         }
                         4 -> {
-                            pplayer2.boats[4].coords.add(coord)
-                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 4
+                            manager.players[1].boats[4].coords.add(coord)
+                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 4
                         }
                         3 -> {
-                            pplayer2.boats[1].coords.add(coord)
-                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 3
+                            manager.players[1].boats[1].coords.add(coord)
+                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 3
                         }
                         2 -> {
-                            pplayer2.boats[2].coords.add(coord)
-                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 2
+                            manager.players[1].boats[2].coords.add(coord)
+                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 2
                         }
                         1 -> {
-                            pplayer2.boats[3].coords.add(coord)
-                            pplayer2.ships[sArr[2].toInt()][sArr[1].toInt()] = 1
+                            manager.players[1].boats[3].coords.add(coord)
+                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 1
                         }
 
                     }
@@ -326,9 +325,9 @@ class MainActivity : AppCompatActivity() {
                 for(i in 0 until 10)
                 {
                     for(o in 0 until 10)
-                        player1.ships[i][o] = 0
+                        manager.players[0].ships[i][o] = 0
                 }
-                for (b2 in player1.boats) {
+                for (b2 in manager.players[0].boats) {
                     b2.coords.clear()
                 }
                 val iterable = data.children
@@ -338,24 +337,24 @@ class MainActivity : AppCompatActivity() {
                     when (sArr[0].toInt()) {
 
                         5 -> {
-                            pplayer1.boats[0].coords.add(coord)
-                            pplayer1.ships[sArr[2].toInt()][sArr[1].toInt()] = 5
+                            manager.players[0].boats[0].coords.add(coord)
+                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 5
                         }
                         4 -> {
-                            pplayer1.boats[4].coords.add(coord)
-                            player1.ships[sArr[2].toInt()][sArr[1].toInt()] = 4
+                            manager.players[0].boats[4].coords.add(coord)
+                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 4
                         }
                         3 -> {
-                            pplayer1.boats[1].coords.add(coord)
-                            pplayer1.ships[sArr[2].toInt()][sArr[1].toInt()] = 3
+                            manager.players[0].boats[1].coords.add(coord)
+                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 3
                         }
                         2 -> {
-                            pplayer1.boats[2].coords.add(coord)
-                            pplayer1.ships[sArr[2].toInt()][sArr[1].toInt()] = 2
+                            manager.players[0].boats[2].coords.add(coord)
+                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 2
                         }
                         1 -> {
-                            pplayer1.boats[3].coords.add(coord)
-                            pplayer1.ships[sArr[2].toInt()][sArr[1].toInt()] = 1
+                            manager.players[0].boats[3].coords.add(coord)
+                            manager.players[0].ships[sArr[2].toInt()][sArr[1].toInt()] = 1
                         }
 
                     }
@@ -567,6 +566,7 @@ class MainActivity : AppCompatActivity() {
             otherPlayer = player1
         }
         else {
+
             tempPlayer = player1
             otherPlayer = player2
         }
@@ -584,8 +584,9 @@ class MainActivity : AppCompatActivity() {
     {
         val intent = Intent(this@MainActivity, WinActivity::class.java)
         intent.putExtra("winner", manager.winner)
-        setResult(0, intent)
         startActivity(intent)
+        finish()
+        return
     }
 
 }
