@@ -86,8 +86,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
+        /**
+         * This listener is listening for the firebase database to change. When a change is found, it checks which players turn it is.
+         * If it the players turn, the game boards is enabled and the player can click.
+         * If it is not the players turn, the game borad is disabled and teh player must wait for the other player to shoot.
+         */
         firebaseDB.child("Games").child(gameID).child("Manager").child("turn").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -96,23 +99,23 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(data: DataSnapshot?) {
                 if(data !is DataSnapshot)
                     return
-
-
-
-
                 if(data.value.toString().equals(player))
                 {
+                    updatePlayer()
                     textWaitToShoot.visibility = View.INVISIBLE
 
+                    // When the player clicks the pass button, it means their turn is done. And control of the game passes to the other player.
                     var btnPass = passBtn
                     hitMiss.visibility = View.INVISIBLE
                     btnPass.visibility = View.INVISIBLE
                     var gameV = boardView
+                    gameV.visibility = View.VISIBLE
                     gameV.canClick = true
                 }
                 else
                 {
                     gameView.canClick = false
+                    gameView.visibility = View.INVISIBLE
                     textWaitToShoot.visibility = View.VISIBLE
                 }
             }
@@ -144,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         player2.name = "Player 2"
 
         //If this is player 2, we update the info in OUR manager to the manager in the firebase database.
-        if(player.equals("Player2"))
+        if(player.equals("Player 2"))
         {
             manager.turn=1
             updateManagerForPlayer2(player1, player2)
@@ -169,6 +172,7 @@ class MainActivity : AppCompatActivity() {
             if(++manager.turn > 0 || manager.turn > 17)
                 manager.updateState("In Progress")
             if(turn%2 == 0) {
+                // update the game board and the mini view dependking on ehich players turn it is.
                 manager.playerTurn = "Player 1"
                 tempPlayer = player2
                 otherPlayer = player1
@@ -179,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                 otherPlayer = player2
             }
             var shot = tempPlayer.ships[y][x]
-            if( shot > 0)
+            if( shot > 0) // If the shot sinks a ship
             {
                 if(tempPlayer.hitBoat(shot) == 0)
                 {
@@ -247,35 +251,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-    private fun goBackToGameScreen() {
-        boardView.visibility = View.VISIBLE
-        miniView.visibility = View.VISIBLE
-        readyPhrase.visibility = View.INVISIBLE
-        HitMiss.text = ""
-        boardView.canClick = true
-        Pass.visibility = View.INVISIBLE
-        turn++
-        var tempPlayer : Player
-        var otherPlayer : Player
-        if(turn%2 == 0) {
-            tempPlayer = player2
-            otherPlayer = player1
-        }
-        else {
-            tempPlayer = player1
-            otherPlayer = player2
-        }
-        miniView.setHitPath(otherPlayer.miniHitPath)
-        miniView.setMissPath(otherPlayer.miniMissPath)
-        miniView.drawBoats(otherPlayer.boats)
-        miniView.invalidate()
-        boardView.setSunkPath(tempPlayer.sunkPath)
-        boardView.setHitPath(tempPlayer.hitPath)
-        boardView.setMissPath(tempPlayer.missPath)
-        boardView.invalidate()
-    }
-
+    /**
+     * This Listener only happens once. It updates Player 2 to have the same boat layout and game state as player 1. This only happen once, at the beginning of the game.
+     */
     private fun updateManagerForPlayer2(pplayer1 : Player, pplayer2: Player) {
         //Player 1 ships. Will be updated from firebase DB so both players have the same view
 
@@ -409,8 +387,15 @@ class MainActivity : AppCompatActivity() {
         else
             manager.playerTurn = "Player 1"
 
+        if(player.equals("Player 1"))
+            manager.playerTurn = "Player 2"
+        else
+            manager.playerTurn = "Player 1"
         test.state = manager.state
         test.turn = manager.playerTurn
+        test.winner = manager.winner
+        test.p1HitsTaken = manager.players[0].hits
+        test.p2HitsTaken = manager.players[1].hits
         firebaseDB.child("Games").child(gameID).child("Manager").setValue(test)
 
 
@@ -485,6 +470,91 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Updates the player at the beginning of their turn so they have the same game state as the other player.
+     */
+    fun updatePlayer()
+    {
+        firebaseDB.child("Games").child(gameID).child("Manager").addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(data: DataSnapshot?) {
+                if(data !is DataSnapshot)
+                    return
+                val children = data.children
+                for(child in children)
+                {
+                    when(child.key)
+                    {
+                        "p1Hits"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[0].hitPath.rects.add(newRect)
+                        }
+                        "p2Hits"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[1].hitPath.rects.add(newRect)
+                        }
+                        "p1Miss"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[0].missPath.rects.add(newRect)
+                        }
+                        "p2Miss"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[1].missPath.rects.add(newRect)
+                        }
+                        "p1miniHits"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[0].miniHitPath.rects.add(newRect)
+                        }
+                        "p2miniHits"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[1].miniHitPath.rects.add(newRect)
+                        }
+                        "p1miniMiss"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[0].miniMissPath.rects.add(newRect)
+                        }
+                        "p2miniHits"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[1].miniMissPath.rects.add(newRect)
+                        }
+                        "p1Sunk"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[0].sunkPath.rects.add(newRect)
+                        }
+                        "p2Sunk"->
+                        {
+                            val childVal = child.children.last().value.toString()
+                            val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
+                            manager.players[1].sunkPath.rects.add(newRect)
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+
     fun gotoWinScreen()
     {
         val intent = Intent(this@MainActivity, WinActivity::class.java)
@@ -492,58 +562,5 @@ class MainActivity : AppCompatActivity() {
         setResult(0, intent)
         startActivity(intent)
     }
-    override fun onActivityResult(requestCode : Int, resultCode: Int, data: Intent?) {
-        val gameView = boardView as com.example.spenserdubois.battleship.boardView
-        super.onActivityReenter(resultCode, data)
-        if(data !is Intent)
-            return
-        manager = data.getSerializableExtra("manager") as GameManager
-        var tempPlayer : Player
-        var otherPlayer : Player
-        if(manager.playerTurn.equals("Player 2")) {
-            tempPlayer = player2
-            otherPlayer = player1
-        }
-        else {
-            tempPlayer = player1
-            otherPlayer = player2
-        }
-        miniView.setHitPath(otherPlayer.miniHitPath)
-        miniView.setMissPath(otherPlayer.miniMissPath)
-        miniView.drawBoats(otherPlayer.boats)
-        miniView.invalidate()
-        gameView.setSunkPath(tempPlayer.sunkPath)
-        gameView.setHitPath(tempPlayer.hitPath)
-        gameView.setMissPath(tempPlayer.missPath)
-        gameView.invalidate()
 
-    }
-
-    override fun onActivityReenter(resultCode: Int, data: Intent?) {
-        super.onActivityReenter(resultCode, data)
-        val gameView = boardView as com.example.spenserdubois.battleship.boardView
-        super.onActivityReenter(resultCode, data)
-        if(data !is Intent)
-            return
-        manager = data.getSerializableExtra("manager") as GameManager
-        var tempPlayer : Player
-        var otherPlayer : Player
-        if(manager.playerTurn.equals("Player 2")) {
-            tempPlayer = player2
-            otherPlayer = player1
-        }
-        else {
-            tempPlayer = player1
-            otherPlayer = player2
-        }
-        miniView.setHitPath(otherPlayer.miniHitPath)
-        miniView.setMissPath(otherPlayer.miniMissPath)
-        miniView.drawBoats(otherPlayer.boats)
-        miniView.invalidate()
-        gameView.setSunkPath(tempPlayer.sunkPath)
-        gameView.setHitPath(tempPlayer.hitPath)
-        gameView.setMissPath(tempPlayer.missPath)
-        gameView.invalidate()
-
-    }
 }
