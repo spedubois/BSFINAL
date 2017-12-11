@@ -84,6 +84,10 @@ class MainActivity : AppCompatActivity() {
             gameView.setMissPath(tempPlayer.missPath)
             gameView.invalidate()
         }
+
+
+
+
         firebaseDB.child("Games").child(gameID).child("Manager").child("turn").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -93,10 +97,9 @@ class MainActivity : AppCompatActivity() {
                 if(data !is DataSnapshot)
                     return
 
-                if(manager.playerTurn.equals("Player 1"))
-                    manager.playerTurn = "Player 2"
-                else
-                    manager.playerTurn = "Player 1"
+
+
+
                 if(data.value.toString().equals(player))
                 {
                     textWaitToShoot.visibility = View.INVISIBLE
@@ -401,6 +404,10 @@ class MainActivity : AppCompatActivity() {
 
         //Update players mini view and main view with misses, hits, sinks
         updateDatabaseElement(test)
+        if(player.equals("Player 1"))
+            manager.playerTurn = "Player 2"
+        else
+            manager.playerTurn = "Player 1"
 
         test.state = manager.state
         test.turn = manager.playerTurn
