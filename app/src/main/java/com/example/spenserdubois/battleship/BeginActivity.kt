@@ -83,17 +83,27 @@ class BeginActivity : AppCompatActivity() {
             val recyclerViewDataset: MutableList<GameAdapter.CustomAdapterItem> = mutableListOf()
             for(c in children)
             {
-                var gm = GameManager()
-                gm.name = c.key.toString()
-                gm.players[0].name = c.child("Player1").value.toString()
-                gm.players[1].name = c.child("Player2").value.toString()
-                gm.players[0].boatsLeft = c.child("Manager").child("p1Left").value as Long
-                gm.players[1].boatsLeft = c.child("Manager").child("p2Left").value as Long
-                gm.winner = c.child("Manager").child("winner").value.toString()
-                gm.state = c.child("Manager").child("state").value.toString()
-                gm.playerTurn = c.child("Manager").child("turn").value.toString()
+                var canAdd = true
+                if(!(c.child("Manager").child("state").value.toString().equals("Completed") &&
+                        (c.child("Player1").value.toString().equals(player1) || c.child("Player2").value.toString().equals(player1)))) {
 
-                recyclerViewDataset.add(GameAdapter.BSGame(gm))
+                    canAdd = false
+                }
+
+                if(canAdd) {
+                    var gm = GameManager()
+                    gm.name = c.key.toString()
+                    gm.players[0].name = c.child("Player1").value.toString()
+                    gm.players[1].name = c.child("Player2").value.toString()
+                    gm.players[0].boatsLeft = c.child("Manager").child("p1Left").value as Long
+                    gm.players[1].boatsLeft = c.child("Manager").child("p2Left").value as Long
+                    gm.winner = c.child("Manager").child("winner").value.toString()
+                    gm.state = c.child("Manager").child("state").value.toString()
+                    gm.playerTurn = c.child("Manager").child("turn").value.toString()
+
+                    recyclerViewDataset.add(GameAdapter.BSGame(gm))
+                }
+
             }
 
             recyclerViewDataset.toTypedArray()

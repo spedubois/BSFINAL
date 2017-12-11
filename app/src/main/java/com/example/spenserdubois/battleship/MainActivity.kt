@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var  passBtn : Button
     private lateinit var readyBtn : Button
     private lateinit var textWaitToShoot : TextView
+    private var shotTaken : Boolean = false
     var gameID = ""
     var email = ""
 
@@ -110,12 +111,13 @@ class MainActivity : AppCompatActivity() {
                     btnPass.visibility = View.INVISIBLE
                     var gameV = boardView
                     gameV.visibility = View.VISIBLE
+                    gameV.alpha = 1f
                     gameV.canClick = true
                 }
                 else
                 {
                     gameView.canClick = false
-                    gameView.visibility = View.INVISIBLE
+                    gameView.alpha = .5f
                     textWaitToShoot.visibility = View.VISIBLE
                 }
             }
@@ -149,10 +151,11 @@ class MainActivity : AppCompatActivity() {
         //If this is player 2, we update the info in OUR manager to the manager in the firebase database.
         if(player.equals("Player 2"))
         {
-            manager.turn=1
+
             updateManagerForPlayer2(player1, player2)
             manager = GameManager(player1, player2, toDB)
             miniView.drawBoats(player1.boats)
+            manager.turn=0
         }
         else
         {
@@ -382,11 +385,6 @@ class MainActivity : AppCompatActivity() {
 
         //Update players mini view and main view with misses, hits, sinks
         updateDatabaseElement(test)
-        if(player.equals("Player 1"))
-            manager.playerTurn = "Player 2"
-        else
-            manager.playerTurn = "Player 1"
-
         if(player.equals("Player 1"))
             manager.playerTurn = "Player 2"
         else
