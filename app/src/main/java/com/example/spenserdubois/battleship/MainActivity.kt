@@ -175,7 +175,7 @@ class MainActivity : AppCompatActivity() {
             var otherPlayer : Player
             if(++manager.turn > 0 || manager.turn > 17)
                 manager.updateState("In Progress")
-            if(turn%2 == 0) {
+            if(player.equals("Player 2")) {
                 // update the game board and the mini view depending on which players turn it is.
                 manager.playerTurn = "Player 2"
                 tempPlayer = player2
