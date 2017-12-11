@@ -69,7 +69,8 @@ class MainActivity : AppCompatActivity() {
             turn++
             var tempPlayer : Player
             var otherPlayer : Player
-            if(turn%2 == 0) {
+            if(player.equals("Player 2")) {
+
                 tempPlayer = player2
                 otherPlayer = player1
             }
@@ -81,10 +82,10 @@ class MainActivity : AppCompatActivity() {
             miniView.setMissPath(otherPlayer.miniMissPath)
             miniView.drawBoats(otherPlayer.boats)
             miniView.invalidate()
-            gameView.setSunkPath(tempPlayer.sunkPath)
-            gameView.setHitPath(tempPlayer.hitPath)
-            gameView.setMissPath(tempPlayer.missPath)
-            gameView.invalidate()
+//            gameView.setSunkPath(tempPlayer.sunkPath)
+//            gameView.setHitPath(tempPlayer.hitPath)
+//            gameView.setMissPath(tempPlayer.missPath)
+//            gameView.invalidate()
         }
 
 
@@ -558,6 +559,25 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+        var tempPlayer : Player
+        var otherPlayer : Player
+        if(player.equals("Player 2")) {
+
+            tempPlayer = player2
+            otherPlayer = player1
+        }
+        else {
+            tempPlayer = player1
+            otherPlayer = player2
+        }
+        miniView.setHitPath(otherPlayer.miniHitPath)
+        miniView.setMissPath(otherPlayer.miniMissPath)
+        miniView.drawBoats(otherPlayer.boats)
+        miniView.invalidate()
+//            gameView.setSunkPath(tempPlayer.sunkPath)
+//            gameView.setHitPath(tempPlayer.hitPath)
+//            gameView.setMissPath(tempPlayer.missPath)
+//            gameView.invalidate()
     }
 
     fun gotoWinScreen()
