@@ -20,7 +20,7 @@ class MiniView : View {
 
     private var gameWidth = 0
     private var gameHeight = 0
-    private var spacing = 0
+    var spacing = 0
     private var path = Path()
     private var missPath = MyPath()
     private var hitPath = MyPath()

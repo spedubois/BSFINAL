@@ -25,15 +25,18 @@ class LoginActivity : AppCompatActivity(){
     private lateinit var textEmail : EditText
     private lateinit var textPassword : EditText
     private lateinit var textView : TextView
-    private lateinit var progressBar : ProgressBar
     private lateinit var firebaseAuth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val user = firebaseAuth.currentUser
+        if(user !is FirebaseUser)
+            return
+
         firebaseAuth = FirebaseAuth.getInstance()
-        if(firebaseAuth.currentUser != null)
+        if(firebaseAuth.currentUser != null && user.isEmailVerified)
         {
             var intent = Intent(this@LoginActivity, BeginActivity::class.java)
             startActivity(intent)

@@ -21,9 +21,8 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var textEmail : EditText
     private lateinit var textPassword : EditText
     private lateinit var creatingView : TextView
-    private lateinit var progressBar : ProgressBar
     private lateinit var firebaseAuth : FirebaseAuth
-    private lateinit var textName : EditText
+    private lateinit var textConfirmPassword : EditText
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +35,7 @@ class SignupActivity : AppCompatActivity() {
         textEmail = editEmailCreate
         textPassword = editPasswordCreate
         creatingView = addingCreate
-        textName = editNicknameCreate
+        textConfirmPassword = editNicknameCreate
 
         btnReg.setOnClickListener{
             register()
@@ -73,6 +72,7 @@ class SignupActivity : AppCompatActivity() {
     {
         val email : String = textEmail.text.toString().trim()
         val password : String = textPassword.text.toString().trim()
+        val confPassword : String = textConfirmPassword.text.toString().trim()
         if(TextUtils.isEmpty(email))
         {
             Toast.makeText(this, "Must enter an email", Toast.LENGTH_SHORT).show()
@@ -83,10 +83,20 @@ class SignupActivity : AppCompatActivity() {
             Toast.makeText(this, "Must enter a password", Toast.LENGTH_SHORT).show()
             return
         }
+        if(TextUtils.isEmpty(confPassword))
+        {
+            Toast.makeText(this, "Please confirm password", Toast.LENGTH_SHORT).show()
+            return
+        }
         if(!checkPassword(password))
         {
             Toast.makeText(this, "Password must contain,\n" +
                     "At least 8 characters\n1 uppercase letter\n1 number\n1 special character(!,@,#,$...)", Toast.LENGTH_LONG).show()
+            return
+        }
+        if(!checkPasswordMatch(password, confPassword))
+        {
+            Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -94,20 +104,25 @@ class SignupActivity : AppCompatActivity() {
         btnReg.isEnabled = false
         textEmail.isEnabled = false
         textPassword.isEnabled = false
-        textName.isEnabled = false
+        textConfirmPassword.isEnabled = false
 
         myAsync().execute()
 
         btnReg.isEnabled = true
         textEmail.isEnabled = true
         textPassword.isEnabled = true
-        textName.isEnabled = true
+        textConfirmPassword.isEnabled = true
 
         var intent = Intent(this, Verify::class.java)
         startActivity(intent)
         finish()
         return
     }
+
+    private fun checkPasswordMatch(pass : String, conf : String): Boolean {
+        return pass.equals(conf)
+    }
+
     fun checkPassword(s : String) : Boolean
     {
         var upper : Boolean = false

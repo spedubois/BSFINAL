@@ -52,6 +52,10 @@ class MainActivity : AppCompatActivity() {
 
         val gameView = boardView
         val miniView = miniView
+        miniView.spacing = 38
+        miniView.addMiss(0 + 0f, 0+0f)
+        miniView.addHit(9+0f, 9+0f)
+        miniView.invalidate()
         val hitMiss = HitMiss
         passBtn = Pass
         readyBtn = ready

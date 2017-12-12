@@ -53,11 +53,12 @@
 
         <EditText
             android:id="@+id/editNicknameCreate"
-            android:layout_margin="15dp"
-            android:hint="Enter your nickname"
-            android:textAlignment="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:hint="Confirm password"
+            android:inputType="textPassword"
+            android:textAlignment="center" />
 
         <Button
             android:id="@+id/registerBtnCreate"

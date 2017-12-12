@@ -42,7 +42,7 @@ class Verify : AppCompatActivity() {
 
 
             /**
-             * Sends an email request to verify the uusers email address
+             * Sends an email request to verify the users email address
              */
             user.sendEmailVerification().addOnCompleteListener { task: Task<Void> ->
                 if(task.isSuccessful) {
