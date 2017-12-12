@@ -260,7 +260,6 @@ class MainActivity : AppCompatActivity() {
             miniView.invalidate()
             firstTurn = false
             manager.turn=0
-            save(manager)
         }
         else
         {
