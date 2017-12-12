@@ -57,38 +57,6 @@ class MainActivity : AppCompatActivity() {
         readyBtn = ready
         val readyPhrase = readyPhrase
 
-
-        readyBtn.setOnClickListener{
-            gameView.visibility = View.VISIBLE
-            miniView.visibility = View.VISIBLE
-            readyBtn.visibility = View.INVISIBLE
-            readyPhrase.visibility = View.INVISIBLE
-            hitMiss.text = ""
-            gameView.canClick = true
-            passBtn.visibility = View.INVISIBLE
-            turn++
-            var tempPlayer : Player
-            var otherPlayer : Player
-            if(player.equals("Player 2")) {
-
-                tempPlayer = player2
-                otherPlayer = player1
-            }
-            else {
-                tempPlayer = player1
-                otherPlayer = player2
-            }
-            miniView.setHitPath(otherPlayer.miniHitPath)
-            miniView.setMissPath(otherPlayer.miniMissPath)
-            miniView.drawBoats(otherPlayer.boats)
-            miniView.invalidate()
-//            gameView.setSunkPath(tempPlayer.sunkPath)
-//            gameView.setHitPath(tempPlayer.hitPath)
-//            gameView.setMissPath(tempPlayer.missPath)
-//            gameView.invalidate()
-        }
-
-
         /**
          * This listener is listening for the firebase database to change. When a change is found, it checks which players turn it is.
          * If it the players turn, the game boards is enabled and the player can click.
@@ -104,6 +72,11 @@ class MainActivity : AppCompatActivity() {
                     return
                 if(data.value.toString().equals(player))
                 {
+                    if(player.equals("Player 1"))
+                        miniView.drawBoats(player2.boats)
+                    else
+                        miniView.drawBoats(player1.boats)
+                    
                     hitMiss.visibility = View.INVISIBLE
                     updatePlayer()
                     textWaitToShoot.visibility = View.INVISIBLE

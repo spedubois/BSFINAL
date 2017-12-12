@@ -56,10 +56,11 @@ class ChooseActivity : AppCompatActivity() {
         }
 
         deleteBtn.setOnClickListener{
-
+            fireDB.child("Games").child(manager.name).setValue(null)
+            val intent = Intent(this@ChooseActivity, BeginActivity::class.java)
+            startActivity(intent)
         }
         backBtn.setOnClickListener{
-            fireDB.child("Games").child(manager.name).setValue(NULL)
             val intent = Intent(this@ChooseActivity, BeginActivity::class.java)
             startActivity(intent)
         }
