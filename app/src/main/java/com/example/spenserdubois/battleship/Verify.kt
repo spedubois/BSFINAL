@@ -24,18 +24,12 @@ class Verify : AppCompatActivity() {
         var btn_send = sendVerif
         var btn_verify = btnVerified
         var btn_resend = btnResend
+        btn_send.isEnabled = trueswdub
 
         txt_title.text = "PLEASE VERIFY YOUR EMAIL"
         var user = FirebaseAuth.getInstance().currentUser
         if(user !is FirebaseUser)
             return
-
-//        if(user.isEmailVerified)
-//        {
-//            var intent = Intent(this@Verify, BeginActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }
 
         btn_send.setOnClickListener {
             btn_send.isEnabled = false

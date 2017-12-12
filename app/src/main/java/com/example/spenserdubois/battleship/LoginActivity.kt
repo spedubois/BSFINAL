@@ -31,17 +31,21 @@ class LoginActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val user = firebaseAuth.currentUser
-        if(user !is FirebaseUser)
-            return
+
 
         firebaseAuth = FirebaseAuth.getInstance()
-        if(firebaseAuth.currentUser != null && user.isEmailVerified)
+
+        if(firebaseAuth.currentUser != null)
         {
-            var intent = Intent(this@LoginActivity, BeginActivity::class.java)
-            startActivity(intent)
-            finish()
-            return
+            val user = firebaseAuth.currentUser
+            if(user !is FirebaseUser)
+                return
+            if(user.isEmailVerified) {
+                var intent = Intent(this@LoginActivity, BeginActivity::class.java)
+                startActivity(intent)
+                finish()
+                return
+            }
         }
 
         btnReg = registerBtn
