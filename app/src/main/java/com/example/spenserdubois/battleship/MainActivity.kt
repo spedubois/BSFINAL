@@ -69,11 +69,13 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(data: DataSnapshot?) {
                 if(data !is DataSnapshot)
                     return
-                gameView.canClick = false
-                gameView.alpha = .5f
-                textWaitToShoot.text = "GAME OVER\n"+data.value.toString()+ " Has WON!!"
-                passBtn.visibility = View.VISIBLE
-                passBtn.text = "RETURN HOME"
+                if(data.value != null) {
+                    gameView.canClick = false
+                    gameView.alpha = .5f
+                    textWaitToShoot.text = "GAME OVER\n" + data.value.toString() + " Has WON!!"
+                    passBtn.visibility = View.VISIBLE
+                    passBtn.text = "RETURN HOME"
+                }
             }
 
         })
