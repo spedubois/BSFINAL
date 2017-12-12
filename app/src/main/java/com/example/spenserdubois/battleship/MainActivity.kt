@@ -256,15 +256,16 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
-            miniView.drawBoats(manager.players[0].boats)
+            miniView.drawBoats(manager.players[1].boats)
             miniView.invalidate()
             firstTurn = false
             manager.turn=0
+            save(manager)
         }
         else
         {
             manager = GameManager(player1, player2, toDB)
-            miniView.drawBoats(player2.boats)
+            miniView.drawBoats(player1.boats)
             miniView.invalidate()
             save(manager)
         }
