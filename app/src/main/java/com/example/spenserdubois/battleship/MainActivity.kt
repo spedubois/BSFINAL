@@ -175,46 +175,6 @@ class MainActivity : AppCompatActivity() {
                                 for(i in 0 until 10)
                                 {
                                     for(o in 0 until 10)
-                                        manager.players[1].ships[i][o] = 0
-                                }
-                                for (b2 in manager.players[1].boats) {
-                                    b2.coords.clear()
-                                }
-                                val iterable = child.children
-                                for (c in iterable) {
-                                    var sArr = c.value.toString().split(" ")
-                                    var coord = Coord(sArr[1].toInt(), sArr[2].toInt())
-                                    when (sArr[0].toInt()) {
-
-                                        5 -> {
-                                            manager.players[1].boats[0].coords.add(coord)
-                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 5
-
-                                        }
-                                        4 -> {
-                                            manager.players[1].boats[4].coords.add(coord)
-                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 4
-                                        }
-                                        3 -> {
-                                            manager.players[1].boats[1].coords.add(coord)
-                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 3
-                                        }
-                                        2 -> {
-                                            manager.players[1].boats[2].coords.add(coord)
-                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 2
-                                        }
-                                        1 -> {
-                                            manager.players[1].boats[3].coords.add(coord)
-                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 1
-                                        }
-
-                                    }
-                                }
-                            }
-                            "boatPos2"->{
-                                for(i in 0 until 10)
-                                {
-                                    for(o in 0 until 10)
                                         manager.players[0].ships[i][o] = 0
                                 }
                                 for (b2 in manager.players[0].boats) {
@@ -251,12 +211,52 @@ class MainActivity : AppCompatActivity() {
                                     }
                                 }
                             }
+                            "boatPos2"->{
+                                for(i in 0 until 10)
+                                {
+                                    for(o in 0 until 10)
+                                        manager.players[1].ships[i][o] = 0
+                                }
+                                for (b2 in manager.players[1].boats) {
+                                    b2.coords.clear()
+                                }
+                                val iterable = child.children
+                                for (c in iterable) {
+                                    var sArr = c.value.toString().split(" ")
+                                    var coord = Coord(sArr[1].toInt(), sArr[2].toInt())
+                                    when (sArr[0].toInt()) {
+
+                                        5 -> {
+                                            manager.players[1].boats[0].coords.add(coord)
+                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 5
+
+                                        }
+                                        4 -> {
+                                            manager.players[1].boats[4].coords.add(coord)
+                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 4
+                                        }
+                                        3 -> {
+                                            manager.players[1].boats[1].coords.add(coord)
+                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 3
+                                        }
+                                        2 -> {
+                                            manager.players[1].boats[2].coords.add(coord)
+                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 2
+                                        }
+                                        1 -> {
+                                            manager.players[1].boats[3].coords.add(coord)
+                                            manager.players[1].ships[sArr[2].toInt()][sArr[1].toInt()] = 1
+                                        }
+
+                                    }
+                                }
+                            }
                         }
                     }
                 }
 
             })
-            miniView.drawBoats(manager.players[1].boats)
+            miniView.drawBoats(manager.players[0].boats)
             miniView.invalidate()
             firstTurn = false
             manager.turn=0
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity() {
         else
         {
             manager = GameManager(player1, player2, toDB)
-            miniView.drawBoats(player1.boats)
+            miniView.drawBoats(player2.boats)
             miniView.invalidate()
             save(manager)
         }
