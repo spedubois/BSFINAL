@@ -63,7 +63,6 @@ class BeginActivity : AppCompatActivity() {
             override fun onDataChange(data: DataSnapshot?) {
                 if(data !is DataSnapshot)
                     return
-                Thread.sleep(500)
                 updateView(data.children)
             }
 
