@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
                     return
                 if(data.value.toString().equals(player))
                 {
+                    hitMiss.visibility = View.INVISIBLE
                     updatePlayer()
                     textWaitToShoot.visibility = View.INVISIBLE
 
@@ -307,6 +308,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     hitMiss.setTextColor(Color.GREEN)
                     hitMiss.text = "SUNK!"
+                    hitMiss.visibility = View.VISIBLE
                     miniView.boatPath = tempPlayer.boatsPath
                     miniView.setHitPath(tempPlayer.miniHitPath)
                     gameView.addHit(x + 0f, y + 0f)
@@ -322,6 +324,7 @@ class MainActivity : AppCompatActivity() {
                 else // If a players shot hit.
                 {
                     tempPlayer.hits++
+                    hitMiss.visibility = View.VISIBLE
                     hitMiss.setTextColor(Color.RED)
                     hitMiss.text = "HIT!"
                     miniView.boatPath = tempPlayer.boatsPath
@@ -338,6 +341,7 @@ class MainActivity : AppCompatActivity() {
             else // If a player shot MISSED
             {
                 hitMiss.setTextColor(Color.DKGRAY)
+                hitMiss.visibility = View.VISIBLE
                 hitMiss.text = "MISS!"
                 miniView.boatPath = tempPlayer.boatsPath
                 miniView.setMissPath(tempPlayer.miniMissPath)
