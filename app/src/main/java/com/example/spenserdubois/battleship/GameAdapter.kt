@@ -65,7 +65,7 @@ class GameAdapter(private val dataset: Array<CustomAdapterItem>) : RecyclerView.
                 if(dataSetItem !is BSGame)
                     throw AssertionError("Not BSGame")
                 val manager = dataSetItem.manager
-                if(manager.state.equals("Completed\n"))
+                if(manager.state.equals("Completed"))
                 {
                     holder.gameTextView.title = manager.winner + "\n  WON!"
                     holder.gameTextView.status = manager.state+"\n"
