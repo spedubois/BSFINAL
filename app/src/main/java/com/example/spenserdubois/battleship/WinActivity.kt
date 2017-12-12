@@ -3,6 +3,7 @@ package com.example.spenserdubois.battleship
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_win.*
@@ -19,6 +20,8 @@ class WinActivity : AppCompatActivity() {
 
         val winText = intent.getStringExtra("winner")
         val againBtn = againBtn
+        val textWin = winner
+        textWin.visibility = View.VISIBLE
 
         againBtn.setOnClickListener{
             val intent = Intent(this@WinActivity, BeginActivity::class.java)
