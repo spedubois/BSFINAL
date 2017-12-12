@@ -17,23 +17,15 @@ class WinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_win)
 
-        val winText = winner
+        val winText = intent.getStringExtra("winner")
         val againBtn = againBtn
 
         againBtn.setOnClickListener{
-            val intent = Intent(this@WinActivity, MainActivity::class.java)
+            val intent = Intent(this@WinActivity, BeginActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
-    }
-
-    override fun onActivityResult(requestCode : Int, resultCode: Int, data: Intent?) {
-        val winText = winner
-        super.onActivityReenter(resultCode, data)
-        if(data !is Intent)
-            return
-        var winner = data.getStringExtra("winner")
-        winText.text = "" + winner + "\nWon!!"
     }
 
 

@@ -57,6 +57,27 @@ class MainActivity : AppCompatActivity() {
         readyBtn = ready
         val readyPhrase = readyPhrase
 
+
+        /**
+         * If a player wins, this listener alrets the player that lost that the game has won, and they must return home
+         */
+        firebaseDB.child("Games").child(gameID).child("Manager").child("winner").addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(data: DataSnapshot?) {
+                if(data !is DataSnapshot)
+                    return
+                gameView.canClick = false
+                gameView.alpha = .5f
+                textWaitToShoot.text = "GAME OVER\n"+data.value.toString()+ " Has WON!!"
+                passBtn.visibility = View.VISIBLE
+                passBtn.text = "RETURN HOME"
+            }
+
+        })
+
         /**
          * This listener is listening for the firebase database to change. When a change is found, it checks which players turn it is.
          * If it the players turn, the game boards is enabled and the player can click.
@@ -76,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                         miniView.drawBoats(player2.boats)
                     else
                         miniView.drawBoats(player1.boats)
-                    
+
                     hitMiss.visibility = View.INVISIBLE
                     updatePlayer()
                     textWaitToShoot.visibility = View.INVISIBLE
@@ -99,15 +120,17 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+        /**
+         * Only active when game is over after player has won. Send loser back to home screen
+         */
         passBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
-                hitMiss.text = ""
-                gameView.visibility = View.INVISIBLE
-                miniView.visibility = View.INVISIBLE
-                passBtn.visibility = View.INVISIBLE
-                readyPhrase.visibility = View.VISIBLE
-                readyBtn.visibility = View.VISIBLE
+                val intent = Intent(this@MainActivity, BeginActivity::class.java)
+                startActivity(intent)
+                finish()
+                return
             }
 
         })
@@ -230,8 +253,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
-            //miniView.drawBoats(manager.players[0].boats)
-            //miniView.invalidate()
             firstTurn = false
             manager.turn=0
         }
@@ -334,6 +355,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Saves current game state and send the info to the firebase DB. The other player pulls this info at the start of their turn
+     */
     fun save(manager: GameManager)
     {
         var test = DatabaseElement()
@@ -543,6 +567,9 @@ class MainActivity : AppCompatActivity() {
 //            gameView.invalidate()
     }
 
+    /**
+     * Goes to the win screen after player wins
+     */
     fun gotoWinScreen()
     {
         val intent = Intent(this@MainActivity, WinActivity::class.java)
