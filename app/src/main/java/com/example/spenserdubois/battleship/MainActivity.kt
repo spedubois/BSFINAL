@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(data: DataSnapshot?) {
                 if(data !is DataSnapshot)
                     return
-                if(data.value != null) {
+                if(data.value.toString().equals("Player 1") || data.value.toString().equals("Player 2")) {
                     gameView.canClick = false
                     gameView.alpha = .5f
                     textWaitToShoot.text = "GAME OVER\n" + data.value.toString() + " Has WON!!"
