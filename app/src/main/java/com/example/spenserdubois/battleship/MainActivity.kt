@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                     gameView.canClick = false
                     gameView.alpha = .5f
                     textWaitToShoot.text = "GAME OVER\n" + data.value.toString() + " Has WON!!"
+                    textWaitToShoot.visibility = View.VISIBLE
                     passBtn.visibility = View.VISIBLE
                     passBtn.text = "RETURN HOME"
                 }
@@ -510,25 +511,25 @@ class MainActivity : AppCompatActivity() {
                             val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
                             manager.players[1].missPath.rects.add(newRect)
                         }
-                        "p1miniHits"->
+                        "p2miniHits"->
                         {
                             val childVal = child.children.last().value.toString()
                             val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
                             manager.players[0].miniHitPath.rects.add(newRect)
                         }
-                        "p2miniHits"->
+                        "p1miniHits"->
                         {
                             val childVal = child.children.last().value.toString()
                             val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
                             manager.players[1].miniHitPath.rects.add(newRect)
                         }
-                        "p1miniMiss"->
+                        "p2miniMiss"->
                         {
                             val childVal = child.children.last().value.toString()
                             val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
                             manager.players[0].miniMissPath.rects.add(newRect)
                         }
-                        "p2miniHits"->
+                        "p1miniHits"->
                         {
                             val childVal = child.children.last().value.toString()
                             val newRect = MyRect(childVal[0].toFloat(), childVal[1].toFloat(), childVal[2].toFloat(), childVal[3].toFloat())
