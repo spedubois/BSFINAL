@@ -559,7 +559,7 @@ class MainActivity : AppCompatActivity() {
         }
         miniView.setHitPath(otherPlayer.miniHitPath)
         miniView.setMissPath(otherPlayer.miniMissPath)
-        //miniView.drawBoats(otherPlayer.boats)
+        miniView.drawBoats(otherPlayer.boats)
         miniView.invalidate()
 //            gameView.setSunkPath(tempPlayer.sunkPath)
 //            gameView.setHitPath(tempPlayer.hitPath)
