@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
          */
         firebaseDB.child("Games").child(gameID).child("Manager").child("turn").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onDataChange(data: DataSnapshot?) {
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
             manager = GameManager(player1, player2, toDB)
 
             /**
-             * This litener updates player to to have the same game state in terms of boat position as player 1
+             * This listener updates player to to have the same game state in terms of boat position as player 1
              */
             firebaseDB.child("Games").child(gameID).child("Manager").addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError?) {
@@ -558,7 +558,7 @@ class MainActivity : AppCompatActivity() {
         }
         miniView.setHitPath(otherPlayer.miniHitPath)
         miniView.setMissPath(otherPlayer.miniMissPath)
-        miniView.drawBoats(otherPlayer.boats)
+        //miniView.drawBoats(otherPlayer.boats)
         miniView.invalidate()
 //            gameView.setSunkPath(tempPlayer.sunkPath)
 //            gameView.setHitPath(tempPlayer.hitPath)
